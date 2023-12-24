@@ -7,7 +7,7 @@ namespace sockettest
 {
     class Sockinator
     {
-        Dictionary<string, string> server_config = new Dictionary<string, string>()
+        Dictionary<string, string> Config = new Dictionary<string, string>()
         {
             { "ip", "IP/DNS GOES HERE" },
             { "port", "PORT GOES HERE" },
@@ -19,9 +19,9 @@ namespace sockettest
         {
             try
             {
-                IPAddress addr = GetAddress();
+                IPAddress Address = GetAddress();
 
-                IPEndPoint ep = new IPEndPoint(addr, int.Parse(server_config["port"]));
+                IPEndPoint ep = new IPEndPoint(Address, int.Parse(Config["port"]));
                 Console.WriteLine("Created endpoint");
 
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -38,11 +38,11 @@ namespace sockettest
 
         private IPAddress GetAddress()
         {
-                IPAddress[] addr = Dns.GetHostAddresses(server_config["ip"]);
-                return addr[0];
+                IPAddress[] Address = Dns.GetHostAddresses(Config["ip"]);
+                return Address[0];
         }
 
-        private string getMessage()
+        private string GetMessage()
         {
             Console.Write("Payload: ");
             return Console.ReadLine();
@@ -54,7 +54,7 @@ namespace sockettest
             {
                 socket.EndConnect(ar);
 
-                byte[] data = System.Text.Encoding.UTF8.GetBytes(getMessage());
+                byte[] data = System.Text.Encoding.UTF8.GetBytes(GetMessage());
                 socket.Send(data);
                 Console.WriteLine("Sent message");
                 byte[] buffer = new byte[1024];
