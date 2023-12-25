@@ -9,8 +9,8 @@ namespace sockettest
     {
         Dictionary<string, string> Config = new Dictionary<string, string>()
         {
-            { "ip", "IP/DNS GOES HERE" },
-            { "port", "PORT GOES HERE" },
+            { "ip", "IP/DNS HERE" },
+            { "port", "PORT HERE" },
         };
 
         private Socket socket;
@@ -28,7 +28,7 @@ namespace sockettest
                 Console.WriteLine("Created socket");
 
                 socket.BeginConnect(ep, ConnectionCallback, socket);
-                Console.WriteLine("Connected to server");
+                Console.WriteLine($"Connected to {Config["ip"]}:{Config["port"]}");
             }
             catch (Exception ex)
             {
@@ -52,14 +52,13 @@ namespace sockettest
         {
             try
             {
-                socket.EndConnect(ar);
 
                 byte[] data = System.Text.Encoding.UTF8.GetBytes(GetMessage());
                 socket.Send(data);
                 Console.WriteLine("Sent message");
                 byte[] buffer = new byte[1024];
                 socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ReceiveCallback, socket);
-                Console.WriteLine("Receiving data...");
+                Console.WriteLine("Received");
             }
             catch (Exception ex)
             {
